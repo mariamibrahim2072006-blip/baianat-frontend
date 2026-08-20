@@ -1,17 +1,18 @@
+// src/pages/About.tsx
 import { Link } from 'react-router-dom';
 
 export default function About() {
     const stats = [
-        { icon: '🏬', number: '10.5k', text: 'Sellers active our site' },
+        { icon: '🏬', number: '10.5k', text: 'Sellers active on our site' },
         { icon: '💲', number: '33k', text: 'Monthly Product Sale', active: true },
-        { icon: '🛍️', number: '45.5k', text: 'Customer active in our site' },
-        { icon: '💰', number: '25k', text: 'Annual gross sale in our site' },
+        { icon: '🛍️', number: '45.5k', text: 'Customer active on our site' },
+        { icon: '💰', number: '25k', text: 'Annual gross sale on our site' },
     ];
 
     const team = [
-        { name: 'Tom Cruise', role: 'Founder & Chairman', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&q=80' },
-        { name: 'Emma Watson', role: 'Managing Director', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&q=80' },
-        { name: 'Will Smith', role: 'Product Designer', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80' },
+        { name: 'Mohamed Ahmed', role: 'Founder & Chairman', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&q=80' },
+        { name: 'Salma Ali', role: 'Managing Director', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&q=80' },
+        { name: 'Karim Mahmoud', role: 'Lead Product Designer', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80' },
     ];
 
     const services = [
@@ -21,7 +22,7 @@ export default function About() {
     ];
 
     return (
-        <div style={{ marginTop: '50px', marginBottom: '140px' }}>
+        <div style={{ padding: '40px 80px', maxWidth: '1200px', margin: '0 auto' }}>
             {/* Breadcrumb */}
             <div style={{ fontSize: '14px', color: '#808080', marginBottom: '40px' }}>
                 <Link to="/" style={{ color: '#808080', textDecoration: 'none' }}>Home</Link> / <span style={{ color: '#000' }}>About</span>
@@ -39,10 +40,10 @@ export default function About() {
                 <div style={{ flex: 1, minWidth: '320px', maxWidth: '525px' }}>
                     <h2 style={{ fontSize: '54px', fontWeight: '600', margin: '0 0 40px 0', letterSpacing: '1px' }}>Our Story</h2>
                     <p style={{ fontSize: '16px', lineHeight: '26px', color: '#000', marginBottom: '24px' }}>
-                        Launched in 2015, Exclusive is South Asia’s premier online shopping marketplace with an active presence in Bangladesh. Supported by wide range of tailored marketing, data and service solutions, Exclusive has 10,500 sellers and 300 brands and serves 3 millions customers across the region.
+                        Launched in 2026, <strong>BAIANAT</strong> is Egypt and the region’s premier online shopping marketplace. Supported by a wide range of tailored marketing, data, and service solutions, Baianat connects over 10,500 active sellers and 300 major brands, serving millions of happy customers across the region.
                     </p>
                     <p style={{ fontSize: '16px', lineHeight: '26px', color: '#000' }}>
-                        Exclusive has more than 1 Million products to offer, growing at a very fast pace. Exclusive offers a diverse assortment in categories ranging from consumer goods to electronics.
+                        Baianat features more than 1 Million diverse products, growing at a rapid pace. Our catalog ranges from consumer electronics and fashion to home appliances, lifestyle, and much more.
                     </p>
                 </div>
 
@@ -74,7 +75,8 @@ export default function About() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: '12px'
+                        gap: '12px',
+                        boxShadow: '0 1px 13px rgba(0,0,0,0.03)'
                     }}>
                         <div style={{
                             width: '60px',
@@ -118,7 +120,7 @@ export default function About() {
                         <div style={{ marginTop: '20px' }}>
                             <h3 style={{ fontSize: '24px', fontWeight: '500', margin: '0 0 6px 0' }}>{member.name}</h3>
                             <p style={{ fontSize: '14px', color: '#808080', margin: '0 0 12px 0' }}>{member.role}</p>
-                            <div style={{ display: 'flex', gap: '16px', fontSize: '16px' }}>
+                            <div style={{ display: 'flex', gap: '16px', fontSize: '16px', color: '#555' }}>
                                 <span style={{ cursor: 'pointer' }}>𝕏</span>
                                 <span style={{ cursor: 'pointer' }}>📷</span>
                                 <span style={{ cursor: 'pointer' }}>in</span>

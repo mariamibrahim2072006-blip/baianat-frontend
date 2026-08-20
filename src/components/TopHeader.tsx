@@ -10,16 +10,13 @@ export default function TopHeader() {
       alignItems: 'center'
     }}>
       <div style={{ flex: 1, textAlign: 'center' }}>
-        Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%! 
+        Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
         <a href="#" style={{ color: '#fff', fontWeight: 'bold', marginLeft: '8px', textDecoration: 'underline' }}>
           ShopNow
         </a>
       </div>
-      <div>
-        <select style={{ backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}>
-          <option>English</option>
-          <option>Arabic</option>
-        </select>
+      <div style={{ fontWeight: '500', cursor: 'default' }}>
+        English
       </div>
     </div>
   );

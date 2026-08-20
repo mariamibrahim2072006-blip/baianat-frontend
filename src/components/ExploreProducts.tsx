@@ -1,151 +1,306 @@
-import dogFoodImg from '../assets/dog-food.png';
-import cameraImg from '../assets/canon-camera.png';
-import laptopImg from '../assets/laptop.png';
-const curologyImg = "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=300&q=80";
-import carImg from '../assets/car.png';
-import shoesImg from '../assets/shoes.png';
-import controllerImg from '../assets/controller.png';
-import jacketImg from '../assets/jacket.png';
+// src/components/ExploreProducts.tsx
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useShop } from '../context/ShopContext';
+
+// مكون الـ Skeleton للتحميل الاحترافي
+const SkeletonCard = ({ darkMode }: { darkMode: boolean }) => (
+    <div style={{
+        height: '350px',
+        backgroundColor: darkMode ? '#333' : '#e0e0e0',
+        borderRadius: '4px',
+        animation: 'pulse 1.5s infinite'
+    }}></div>
+);
 
 export default function ExploreProducts() {
-    const products = [
-        { id: 1, name: 'Breed Dry Dog Food', price: '$100', rating: '★★★☆☆', reviews: '(35)', isNew: false, image: dogFoodImg },
-        { id: 2, name: 'CANON EOS DSLR Camera', price: '$360', rating: '★★★★☆', reviews: '(95)', isNew: false, hasCart: true, image: cameraImg },
-        { id: 3, name: 'ASUS FHD Gaming Laptop', price: '$700', rating: '★★★★★', reviews: '(325)', isNew: false, image: laptopImg },
-        { id: 4, name: 'Curology Product Set', price: '$500', rating: '★★★★☆', reviews: '(145)', isNew: false, image: curologyImg },
-        { id: 5, name: 'Kids Electric Car', price: '$960', rating: '★★★★★', reviews: '(65)', isNew: true, colors: ['#FB1314', '#DB4444'], image: carImg },
-        { id: 6, name: 'Jr. Zoom Soccer Cleats', price: '$1160', rating: '★★★★★', reviews: '(35)', isNew: false, colors: ['#EEFF61', '#DB4444'], image: shoesImg },
-        { id: 7, name: 'GP11 Shooter USB Gamepad', price: '$660', rating: '★★★★.5', reviews: '(55)', isNew: true, colors: ['#000', '#DB4444'], image: controllerImg },
-        { id: 8, name: 'Quilted Satin Jacket', price: '$660', rating: '★★★★.5', reviews: '(55)', isNew: false, colors: ['#184A48', '#DB4444'], image: jacketImg },
-    ];
+    const {
+        addToCart,
+        addToWishlist,
+        wishlist,
+        darkMode,
+        products,
+        productsLoading,
+        searchTerm,
+    } = useShop();
+
+    const [selectedCategory, setSelectedCategory] = useState('all');
+
+    const filteredProducts = products.filter((product) => {
+        const matchesCategory =
+            selectedCategory === 'all' ||
+            product.category === selectedCategory;
+
+        const matchesSearch =
+            product.name
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase().trim());
+
+        return matchesCategory && matchesSearch;
+    });
 
     return (
-        <div style={{ marginTop: '70px', marginBottom: '80px' }}>
-            {/* Red Tag */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <div style={{ width: '20px', height: '40px', backgroundColor: '#DB4444', borderRadius: '4px' }}></div>
-                <span style={{ color: '#DB4444', fontWeight: '600', fontSize: '16px' }}>Our Products</span>
+        <section
+            style={{
+                marginTop: '80px',
+                marginBottom: '80px',
+                padding: '0 50px',
+            }}
+        >
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '16px',
+                    marginBottom: '20px',
+                }}
+            >
+                <div
+                    style={{
+                        width: '20px',
+                        height: '40px',
+                        backgroundColor: '#DB4444',
+                        borderRadius: '4px',
+                    }}
+                />
+
+                <span
+                    style={{
+                        color: '#DB4444',
+                        fontWeight: '600',
+                        fontSize: '16px',
+                    }}
+                >
+                    Our Products
+                </span>
             </div>
 
-            {/* Header & Arrows */}
-            <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: '20px',
-                marginBottom: '50px'
-            }}>
-                <h2 style={{ fontSize: '36px', fontWeight: '600', margin: 0 }}>Explore Our Products</h2>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                    <button style={{ width: '46px', height: '46px', borderRadius: '50%', border: 'none', backgroundColor: '#F5F5F5', cursor: 'pointer', fontSize: '18px' }}>&larr;</button>
-                    <button style={{ width: '46px', height: '46px', borderRadius: '50%', border: 'none', backgroundColor: '#F5F5F5', cursor: 'pointer', fontSize: '18px' }}>&rarr;</button>
-                </div>
-            </div>
+            <h2
+                style={{
+                    fontSize: '36px',
+                    fontWeight: '600',
+                    margin: '0 0 30px 0',
+                    color: darkMode ? '#fff' : '#000',
+                }}
+            >
+                Explore Our Products
+            </h2>
 
-            {/* Products Grid (8 Items) */}
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
-                gap: '30px'
-            }}>
-                {products.map((item) => (
-                    <div key={item.id}>
-                        {/* Image Box */}
-                        <div style={{
-                            backgroundColor: '#F5F5F5',
-                            height: '250px',
+            <div
+                style={{
+                    display: 'flex',
+                    gap: '12px',
+                    marginBottom: '40px',
+                    flexWrap: 'wrap',
+                }}
+            >
+                {[
+                    ['all', 'All'],
+                    ['electronics', 'Electronics'],
+                    ['furniture', 'Furniture'],
+                    ['animals', 'Animals'],
+                    ['clothing', 'Clothing'],
+                    ['bags', 'Bags'],
+                ].map(([value, label]) => (
+                    <button
+                        key={value}
+                        onClick={() =>
+                            setSelectedCategory(value)
+                        }
+                        style={{
+                            padding: '10px 20px',
                             borderRadius: '4px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            position: 'relative',
-                            overflow: 'hidden'
-                        }}>
-                            {item.isNew && (
-                                <span style={{
-                                    position: 'absolute',
-                                    top: '12px',
-                                    left: '12px',
-                                    backgroundColor: '#00FF66',
-                                    color: '#fff',
-                                    padding: '4px 12px',
-                                    borderRadius: '4px',
-                                    fontSize: '12px'
-                                }}>NEW</span>
-                            )}
-
-                            {/* Action Icons */}
-                            <div style={{ position: 'absolute', top: '12px', right: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                <button style={{ border: 'none', backgroundColor: '#fff', borderRadius: '50%', width: '34px', height: '34px', cursor: 'pointer' }}>♡</button>
-                                <button style={{ border: 'none', backgroundColor: '#fff', borderRadius: '50%', width: '34px', height: '34px', cursor: 'pointer' }}>👁</button>
-                            </div>
-
-                            {/* Product Image */}
-                            <img
-                                src={item.image}
-                                alt={item.name}
-                                style={{ width: '150px', height: '140px', objectFit: 'contain' }}
-                            />
-
-                            {item.hasCart && (
-                                <button style={{
-                                    position: 'absolute',
-                                    bottom: 0,
-                                    width: '100%',
-                                    backgroundColor: '#000',
-                                    color: '#fff',
-                                    border: 'none',
-                                    padding: '10px',
-                                    fontWeight: '500',
-                                    cursor: 'pointer',
-                                    fontSize: '14px'
-                                }}>Add To Cart</button>
-                            )}
-                        </div>
-
-                        {/* Info */}
-                        <div style={{ marginTop: '16px' }}>
-                            <h3 style={{ fontSize: '16px', fontWeight: '600', margin: '0 0 8px 0' }}>{item.name}</h3>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '6px' }}>
-                                <span style={{ color: '#DB4444', fontWeight: '600' }}>{item.price}</span>
-                                <span style={{ color: '#FFAD33', fontSize: '14px' }}>{item.rating}</span>
-                                <span style={{ color: '#808080', fontSize: '14px', fontWeight: '600' }}>{item.reviews}</span>
-                            </div>
-
-                            {/* Color Options */}
-                            {item.colors && (
-                                <div style={{ display: 'flex', gap: '6px', marginTop: '6px', alignItems: 'center' }}>
-                                    {item.colors.map((c, i) => (
-                                        <span key={i} style={{
-                                            width: '14px',
-                                            height: '14px',
-                                            borderRadius: '50%',
-                                            backgroundColor: c,
-                                            display: 'inline-block',
-                                            border: i === 0 ? '1px solid #000' : 'none'
-                                        }}></span>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                            border: '1px solid #ccc',
+                            backgroundColor:
+                                selectedCategory === value
+                                    ? '#DB4444'
+                                    : '#fff',
+                            color:
+                                selectedCategory === value
+                                    ? '#fff'
+                                    : '#000',
+                            cursor: 'pointer',
+                            fontWeight: '500',
+                        }}
+                    >
+                        {label}
+                    </button>
                 ))}
             </div>
 
-            {/* View All Products Button */}
-            <div style={{ textAlign: 'center', marginTop: '60px' }}>
-                <button style={{
-                    backgroundColor: '#DB4444',
-                    color: '#fff',
-                    border: 'none',
-                    padding: '16px 48px',
-                    borderRadius: '4px',
-                    fontSize: '16px',
-                    fontWeight: '500',
-                    cursor: 'pointer'
-                }}>View All Products</button>
+            {/* تم تحويل الـ Grid ليكون Responsive باستخدام auto-fit */}
+            <div
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
+                    gap: '30px',
+                }}
+            >
+                {productsLoading
+                    ? [...Array(8)].map((_, i) => <SkeletonCard key={i} darkMode={darkMode} />)
+                    : filteredProducts.map((product) => {
+                        const isWishlisted = wishlist.some(
+                            (item) =>
+                                String(item.id) === String(product.id)
+                        );
+
+                        return (
+                            <div
+                                key={product.id}
+                                style={{
+                                    position: 'relative',
+                                }}
+                            >
+                                <Link
+                                    to={`/product/${product.id}`}
+                                    style={{
+                                        textDecoration: 'none',
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            backgroundColor:
+                                                darkMode
+                                                    ? '#1E1E1E'
+                                                    : '#F5F5F5',
+                                            height: '250px',
+                                            borderRadius: '4px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            overflow: 'hidden',
+                                        }}
+                                    >
+                                        {/* إضافة Lazy Loading هنا للسرعة */}
+                                        <img
+                                            src={
+                                                product.image && product.image.trim() !== ''
+                                                    ? product.image
+                                                    : 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60'
+                                            }
+                                            alt={product.name}
+                                            loading="lazy"
+                                            style={{
+                                                width: '150px',
+                                                height: '140px',
+                                                objectFit: 'contain',
+                                            }}
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60';
+                                            }}
+                                        />
+                                    </div>
+                                </Link>
+
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        addToWishlist(
+                                            product
+                                        );
+                                    }}
+                                    style={{
+                                        position: 'absolute',
+                                        top: '12px',
+                                        right: '12px',
+                                        border: 'none',
+                                        borderRadius: '50%',
+                                        width: '34px',
+                                        height: '34px',
+                                        cursor: 'pointer',
+                                        backgroundColor:
+                                            isWishlisted
+                                                ? '#DB4444'
+                                                : '#fff',
+                                    }}
+                                >
+                                    {isWishlisted
+                                        ? '❤️'
+                                        : '♡'}
+                                </button>
+
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        addToCart(
+                                            product
+                                        );
+                                    }}
+                                    style={{
+                                        position: 'absolute',
+                                        bottom: '80px',
+                                        width: '100%',
+                                        backgroundColor: '#000',
+                                        color: '#fff',
+                                        border: 'none',
+                                        padding: '12px',
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    Add To Cart
+                                </button>
+
+                                <Link
+                                    to={`/product/${product.id}`}
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: darkMode
+                                            ? '#fff'
+                                            : '#000',
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            marginTop: '16px',
+                                        }}
+                                    >
+                                        <h3
+                                            style={{
+                                                fontSize: '16px',
+                                                fontWeight: '600',
+                                                margin: '0 0 8px 0',
+                                            }}
+                                        >
+                                            {product.name}
+                                        </h3>
+
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '8px',
+                                            }}
+                                        >
+                                            <span
+                                                style={{
+                                                    color: '#FFAD33',
+                                                    fontSize: '14px',
+                                                }}
+                                            >
+                                                ★{' '}
+                                                {product.rating}
+                                            </span>
+
+                                            <span
+                                                style={{
+                                                    color: '#808080',
+                                                    fontSize: '14px',
+                                                }}
+                                            >
+                                                ({product.reviews})
+                                            </span>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </div>
+                        );
+                    })}
             </div>
-        </div>
+
+            {/* الأنيميشن الخاص بالتحميل */}
+            <style>{`
+                @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+            `}</style>
+        </section>
     );
 }

@@ -1,104 +1,173 @@
-import { Link } from 'react-router-dom';
-import authImg from '../assets/auth-side.png';
+// src/pages/Login.tsx
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useAuth } from '../context/AuthContext'; // استيراد الـ useAuth لجلب دالة التحديث
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
+    const navigate = useNavigate();
+    const { refreshUser } = useAuth(); // جلب دالة refreshUser من الكونتكست
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (loading) return;
+
+        setError('');
+        setLoading(true);
+
+        try {
+            const response = await axios.post(
+                `${API_URL}/login`,
+                {
+                    email: email.trim(),
+                    password,
+                },
+                {
+                    withCredentials: true,
+                }
+            );
+
+            console.log('✅ Login successful:', response.data);
+
+            // تحديث حالة المستخدم فوراً في التطبيق ليظهر اسمه في الـ Navbar وحالة الحساب
+            await refreshUser();
+
+            navigate('/');
+        } catch (error: any) {
+            console.error('❌ Login error:', error);
+
+            setError(
+                error.response?.data?.message ||
+                'فشل الاتصال بالخادم، يرجى المحاولة لاحقاً.'
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginTop: '60px',
-            marginBottom: '140px',
-            marginLeft: 'calc(-50vw + 50%)', // يلغي الهامش الشمال تماماً ويلتصق بالحافة
-            gap: '80px',
-            flexWrap: 'wrap'
-        }}>
-            {/* Left Full Bleed Image */}
-            <div style={{
-                flex: '1.2',
-                minWidth: '380px',
-                backgroundColor: '#CBE4E8',
-                borderRadius: '0 4px 4px 0',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                maxHeight: '700px'
-            }}>
-                <img
-                    src={authImg}
-                    alt="Side Graphic"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
+        <div className="auth-page">
+            <div className="auth-background">
+                <div className="auth-orb auth-orb-one" />
+                <div className="auth-orb auth-orb-two" />
+                <div className="auth-orb auth-orb-three" />
             </div>
 
-            {/* Right Form */}
-            <div style={{ flex: '1', minWidth: '320px', maxWidth: '380px', paddingRight: '40px' }}>
-                <h2 style={{
-                    fontSize: '36px',
-                    fontWeight: '500',
-                    margin: '0 0 12px 0',
-                    letterSpacing: '1px',
-                    fontFamily: 'Inter, sans-serif'
-                }}>
-                    Log in to <span style={{ fontWeight: '600' }}>Exclusive</span>
-                </h2>
-                <p style={{ fontSize: '16px', color: '#000', margin: '0 0 40px 0' }}>
-                    Enter your details below
-                </p>
+            <main className="auth-card">
+                <div className="auth-logo">
+                    <span>B</span>
+                </div>
 
-                <form style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-                    <input
-                        type="text"
-                        placeholder="Email or Phone Number"
-                        style={{
-                            border: 'none',
-                            borderBottom: '1px solid #c1c0c1',
-                            outline: 'none',
-                            padding: '8px 0',
-                            fontSize: '16px'
-                        }}
-                    />
+                <div className="auth-header">
+                    <p className="auth-small-title">
+                        WELCOME BACK
+                    </p>
 
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        style={{
-                            border: 'none',
-                            borderBottom: '1px solid #c1c0c1',
-                            outline: 'none',
-                            padding: '8px 0',
-                            fontSize: '16px'
-                        }}
-                    />
+                    <h1>Login to Your Account</h1>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
-                        <button type="button" style={{
-                            backgroundColor: '#DB4444',
-                            color: '#fff',
-                            border: 'none',
-                            padding: '16px 48px',
-                            borderRadius: '4px',
-                            fontSize: '16px',
-                            fontWeight: '500',
-                            cursor: 'pointer'
-                        }}>
-                            Log In
-                        </button>
+                    <p>
+                        Welcome back. Please enter your details.
+                    </p>
+                </div>
 
-                        <a href="#" style={{ color: '#DB4444', fontSize: '15px', textDecoration: 'none' }}>
-                            Forget Password?
-                        </a>
+                <form
+                    className="auth-form"
+                    onSubmit={handleLogin}
+                >
+                    <div className="auth-field">
+                        <label htmlFor="login-email">
+                            Email
+                        </label>
+
+                        <input
+                            id="login-email"
+                            type="email"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) =>
+                                setEmail(e.target.value)
+                            }
+                            autoComplete="email"
+                            required
+                            disabled={loading}
+                        />
                     </div>
+
+                    <div className="auth-field">
+                        <label htmlFor="login-password">
+                            Password
+                        </label>
+
+                        <div className="password-wrapper">
+                            <input
+                                id="login-password"
+                                type={
+                                    showPassword
+                                        ? 'text'
+                                        : 'password'
+                                }
+                                placeholder="Enter your password"
+                                value={password}
+                                onChange={(e) =>
+                                    setPassword(e.target.value)
+                                }
+                                autoComplete="current-password"
+                                required
+                                disabled={loading}
+                            />
+
+                            <button
+                                type="button"
+                                className="password-toggle"
+                                onClick={() =>
+                                    setShowPassword(
+                                        (value) => !value
+                                    )
+                                }
+                                disabled={loading}
+                            >
+                                {showPassword ? 'Hide' : 'Show'}
+                            </button>
+                        </div>
+                    </div>
+
+                    {error && (
+                        <div className="auth-message error">
+                            {error}
+                        </div>
+                    )}
+
+                    <button
+                        type="submit"
+                        className="auth-button"
+                        disabled={loading}
+                    >
+                        {loading
+                            ? 'Logging in...'
+                            : 'Log In'}
+                    </button>
                 </form>
 
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '32px', fontSize: '15px', color: '#666' }}>
-                    <span>Don't have an account?</span>
-                    <Link to="/signup" style={{ color: '#000', fontWeight: '600', textDecoration: 'underline', textUnderlineOffset: '4px' }}>
-                        Sign up
-                    </Link>
+                <div className="auth-divider">
+                    <span>OR</span>
                 </div>
-            </div>
+
+                <p className="auth-switch">
+                    Don't have an account?{' '}
+                    <Link to="/signup">
+                        Create Account
+                    </Link>
+                </p>
+            </main>
         </div>
     );
 }

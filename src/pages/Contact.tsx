@@ -1,158 +1,96 @@
-import { Link } from 'react-router-dom';
+// src/pages/Contact.tsx
+import React, { useState } from 'react';
 
 export default function Contact() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert('Thank you! Your message has been sent successfully.');
+    setName('');
+    setEmail('');
+    setPhone('');
+    setMessage('');
+  };
+
   return (
-    <div style={{ marginTop: '50px', marginBottom: '140px' }}>
-      {/* Breadcrumb */}
-      <div style={{ fontSize: '14px', color: '#808080', marginBottom: '60px' }}>
-        <Link to="/" style={{ color: '#808080', textDecoration: 'none' }}>Home</Link> / <span style={{ color: '#000' }}>Contact</span>
+    <div style={{ padding: '40px 80px', maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ fontSize: '14px', color: '#7f7f7f', marginBottom: '60px' }}>
+        Home / <span style={{ color: '#000' }}>Contact</span>
       </div>
 
-      <div style={{
-        display: 'flex',
-        gap: '40px',
-        alignItems: 'stretch',
-        flexWrap: 'wrap'
-      }}>
-        {/* Left Side: Contact Info Card */}
-        <div style={{
-          flex: '1',
-          minWidth: '300px',
-          maxWidth: '340px',
-          padding: '40px 35px',
-          boxShadow: '0 1px 13px rgba(0,0,0,0.05)',
-          borderRadius: '4px'
-        }}>
-          {/* Call To Us */}
-          <div style={{ borderBottom: '1px solid #c1c0c1', paddingBottom: '32px', marginBottom: '32px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-              <div style={{
-                width: '40px',
-                height: '40px',
-                backgroundColor: '#DB4444',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#fff',
-                fontSize: '18px'
-              }}>
-                📞
-              </div>
-              <h3 style={{ fontSize: '16px', fontWeight: '600', margin: 0 }}>Call To Us</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: '350px 1fr', gap: '50px', alignItems: 'start', flexWrap: 'wrap' }}>
+        <div style={{ padding: '30px', boxShadow: '0 1px 13px rgba(0,0,0,0.05)', borderRadius: '4px', backgroundColor: '#fff' }}>
+          <div style={{ marginBottom: '40px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
+              <div style={{ width: '40px', height: '40px', backgroundColor: '#DB4444', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>📞</div>
+              <h3 style={{ fontSize: '16px', fontWeight: '500', margin: 0 }}>Call To Us</h3>
             </div>
-            <p style={{ fontSize: '14px', margin: '0 0 16px 0', lineHeight: '22px' }}>We are available 24/7, 7 days a week.</p>
-            <p style={{ fontSize: '14px', margin: 0 }}>Phone: +8801611112222</p>
+            <p style={{ fontSize: '14px', color: '#000', marginBottom: '10px' }}>We are available 24/7, 7 days a week.</p>
+            <p style={{ fontSize: '14px', color: '#000', margin: 0, fontWeight: '500' }}>Phone: +20 100 000 0000</p>
           </div>
 
-          {/* Write To Us */}
+          <hr style={{ border: '0', borderTop: '1px solid #e0e0e0', marginBottom: '40px' }} />
+
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-              <div style={{
-                width: '40px',
-                height: '40px',
-                backgroundColor: '#DB4444',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#fff',
-                fontSize: '18px'
-              }}>
-                ✉️
-              </div>
-              <h3 style={{ fontSize: '16px', fontWeight: '600', margin: 0 }}>Write To Us</h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
+              <div style={{ width: '40px', height: '40px', backgroundColor: '#DB4444', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>✉️</div>
+              <h3 style={{ fontSize: '16px', fontWeight: '500', margin: 0 }}>Write To Us</h3>
             </div>
-            <p style={{ fontSize: '14px', margin: '0 0 16px 0', lineHeight: '22px' }}>Fill out our form and we will contact you within 24 hours.</p>
-            <p style={{ fontSize: '14px', margin: '0 0 16px 0' }}>Emails: customer@exclusive.com</p>
-            <p style={{ fontSize: '14px', margin: 0 }}>Emails: support@exclusive.com</p>
+            <p style={{ fontSize: '14px', color: '#000', marginBottom: '15px' }}>Fill out our form and we will contact you within 24 hours.</p>
+            <p style={{ fontSize: '14px', color: '#000', marginBottom: '10px' }}>Emails: support@baianat.com</p>
+            <p style={{ fontSize: '14px', color: '#000', margin: 0 }}>Emails: info@baianat.com</p>
           </div>
         </div>
 
-        {/* Right Side: Message Form */}
-        <div style={{
-          flex: '2',
-          minWidth: '340px',
-          padding: '40px 32px',
-          boxShadow: '0 1px 13px rgba(0,0,0,0.05)',
-          borderRadius: '4px'
-        }}>
-          <form style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-            {/* 3 Top Inputs */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px' }}>
-              <input
-                type="text"
-                placeholder="Your Name *"
-                style={{
-                  backgroundColor: '#F5F5F5',
-                  border: 'none',
-                  borderRadius: '4px',
-                  padding: '14px 16px',
-                  fontSize: '14px',
-                  outline: 'none'
-                }}
-              />
-              <input
-                type="email"
-                placeholder="Your Email *"
-                style={{
-                  backgroundColor: '#F5F5F5',
-                  border: 'none',
-                  borderRadius: '4px',
-                  padding: '14px 16px',
-                  fontSize: '14px',
-                  outline: 'none'
-                }}
-              />
-              <input
-                type="tel"
-                placeholder="Your Phone *"
-                style={{
-                  backgroundColor: '#F5F5F5',
-                  border: 'none',
-                  borderRadius: '4px',
-                  padding: '14px 16px',
-                  fontSize: '14px',
-                  outline: 'none'
-                }}
-              />
-            </div>
+        <form onSubmit={handleSubmit} style={{ padding: '40px', boxShadow: '0 1px 13px rgba(0,0,0,0.05)', borderRadius: '4px', backgroundColor: '#fff' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginBottom: '30px' }}>
+            <input
+              type="text"
+              placeholder="Your Name *"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              style={{ backgroundColor: '#F5F5F5', border: 'none', padding: '12px', borderRadius: '4px', outline: 'none', fontSize: '14px' }}
+              required
+            />
+            <input
+              type="email"
+              placeholder="Your Email *"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{ backgroundColor: '#F5F5F5', border: 'none', padding: '12px', borderRadius: '4px', outline: 'none', fontSize: '14px' }}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Your Phone *"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              style={{ backgroundColor: '#F5F5F5', border: 'none', padding: '12px', borderRadius: '4px', outline: 'none', fontSize: '14px' }}
+              required
+            />
+          </div>
 
-            {/* Textarea */}
-            <textarea
-              rows={8}
-              placeholder="Your Message"
-              style={{
-                backgroundColor: '#F5F5F5',
-                border: 'none',
-                borderRadius: '4px',
-                padding: '16px',
-                fontSize: '14px',
-                outline: 'none',
-                resize: 'none'
-              }}
-            ></textarea>
+          <textarea
+            placeholder="Your Message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            style={{ backgroundColor: '#F5F5F5', border: 'none', padding: '15px', borderRadius: '4px', outline: 'none', width: '100%', height: '200px', resize: 'none', marginBottom: '30px', fontSize: '14px', boxSizing: 'border-box' }}
+            required
+          />
 
-            {/* Send Button */}
-            <div style={{ textAlign: 'right' }}>
-              <button
-                type="button"
-                style={{
-                  backgroundColor: '#DB4444',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '16px 48px',
-                  borderRadius: '4px',
-                  fontSize: '16px',
-                  fontWeight: '500',
-                  cursor: 'pointer'
-                }}
-              >
-                Send Message
-              </button>
-            </div>
-          </form>
-        </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <button
+              type="submit"
+              style={{ backgroundColor: '#DB4444', color: '#fff', border: 'none', padding: '16px 40px', borderRadius: '4px', fontSize: '16px', fontWeight: '500', cursor: 'pointer' }}
+            >
+              Send Message
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
