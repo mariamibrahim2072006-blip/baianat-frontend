@@ -1,3 +1,5 @@
+// src/context/AuthContext.tsx
+
 import React, {
     createContext,
     useContext,
@@ -58,10 +60,12 @@ export function AuthProvider({
     const refreshUser =
         async () => {
             try {
+                const token = localStorage.getItem('token');
                 const response =
                     await axios.get(
                         `${API_URL}/me`,
                         {
+                            headers: token ? { Authorization: `Bearer ${token}` } : {},
                             withCredentials: true,
                         }
                     );
@@ -78,11 +82,13 @@ export function AuthProvider({
         async (
             data: UpdateUserData
         ) => {
+            const token = localStorage.getItem('token');
             const response =
                 await axios.put(
                     `${API_URL}/me`,
                     data,
                     {
+                        headers: token ? { Authorization: `Bearer ${token}` } : {},
                         withCredentials:
                             true,
                     }
@@ -101,15 +107,18 @@ export function AuthProvider({
     const logout =
         async () => {
             try {
+                const token = localStorage.getItem('token');
                 await axios.post(
                     `${API_URL}/logout`,
                     {},
                     {
+                        headers: token ? { Authorization: `Bearer ${token}` } : {},
                         withCredentials:
                             true,
                     }
                 );
             } finally {
+                localStorage.removeItem('token');
                 setUser(null);
             }
         };
