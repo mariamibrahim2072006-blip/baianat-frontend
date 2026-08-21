@@ -21,17 +21,26 @@ interface Order {
 export default function MyOrders() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         async function fetchOrders() {
             try {
-                const res = await fetch('http://localhost:5000/api/orders', {
+                const API_URL =
+                    import.meta.env.VITE_API_URL ||
+                    'http://localhost:5000/api';
+
+                const res = await fetch(`${API_URL}/orders`, {
                     credentials: 'include',
                 });
+
                 const data = await res.json();
+
                 if (res.ok) {
-                    // الـ API عندك بترجع الأوردرات في شكل مصفوفة مباشرة
-                    setOrders(Array.isArray(data) ? data : data.orders || []);
+                    // الـ API بترجع الأوردرات في شكل مصفوفة مباشرة
+                    setOrders(
+                        Array.isArray(data)
+                            ? data
+                            : data.orders || []
+                    );
                 }
             } catch (err) {
                 console.error('Error fetching orders:', err);
@@ -39,9 +48,9 @@ export default function MyOrders() {
                 setLoading(false);
             }
         }
+
         fetchOrders();
     }, []);
-
     if (loading) return <div style={{ padding: '20px', color: '#555' }}>جاري تحميل طلباتك...</div>;
 
     if (orders.length === 0) {
